@@ -10,6 +10,7 @@ The architecture is designed around a Databricks-centric model, using Delta Lake
 <img width="1059" height="631" alt="image" src="https://github.com/user-attachments/assets/b329a340-dcf0-43ee-a65c-3f089c7512f2" />
 
 
+
 #3. Mechanism X: 
 Purpose
 Mechanism X is responsible for breaking down a potentially massive, continuously growing source transaction file into small, consistently sized chunks using the power of pandas on Databricks. 
@@ -37,6 +38,7 @@ o	Data for calculating percentiles.
 6.	Output: Within the foreachBatch operation, once 50 detections are collected, the job writes all 50 records to a single, unique CSV file in the detections S3 bucket (s3://your-bucket/detections/). The file is named uniquely, e.g., detections_1657886410.csv.
 
 #5. Pattern Definitions
+
 PatId1: UPGRADE
 •	ActionType: UPGRADE
 •	Conditions:
