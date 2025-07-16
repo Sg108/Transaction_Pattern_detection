@@ -44,18 +44,19 @@ PatId1: UPGRADE
 2.	The customer's total transaction count for that merchant must be in the top 10th percentile compared to all other customers of that same merchant.
 3.	The customer's average transaction weight (averaged over all their transactions with that merchant) must be in the bottom 10th percentile.
 
-
 PatId2: CHILD
 •	ActionType: CHILD
 •	Conditions:
 1.	The customer has made at least 80 transactions with the specific merchant.
 2.	The customer's average transaction value for that merchant is less than ₹23.
+   
 PatId3: DEI-NEEDED
 •	ActionType: DEI-NEEDED
 •	Conditions:
 1.	The total number of female customers for the merchant is greater than 100.
 2.	The total number of female customers is less than the total number of male customers for that same merchant.
 •	Note: For this detection, customerName can be “” as the detection applies to the merchant, not an individual customer.
+
 
 #6. Implementation Considerations
 •	State Management: Delta table is used to gather the coming data from chunks and using Py spark on it to analyse for the detections in the Databricks job.
