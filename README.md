@@ -2,8 +2,12 @@
 
 #1. Overview
 This document outlines the architecture for a high-performance, scalable system designed to process a large stream of transaction data in near real-time. The system is composed of two primary, independent mechanisms, both running on Databricks:
+
 •	Mechanism X: A scheduled Databricks job that reads a master transaction log file from an AWS S3 bucket, breaks it into smaller, manageable chunks, and writes them to a Delta table in a landing zone.
+
 •	Mechanism Y: A continuous Databricks job that streams from the Delta table as new transaction chunks arrive, analyses them to detect specific, predefined patterns, and writes the results to a designated S3 bucket.
+
+
 #2. System Architecture
 The architecture is designed around a Databricks-centric model, using Delta Lake for reliable data transfer and external databases for stateful analysis.
  
