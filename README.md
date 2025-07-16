@@ -1,4 +1,5 @@
 #Real-Time Transaction Pattern Detection System
+
 #1. Overview
 This document outlines the architecture for a high-performance, scalable system designed to process a large stream of transaction data in near real-time. The system is composed of two primary, independent mechanisms, both running on Databricks:
 •	Mechanism X: A scheduled Databricks job that reads a master transaction log file from an AWS S3 bucket, breaks it into smaller, manageable chunks, and writes them to a Delta table in a landing zone.
