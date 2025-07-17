@@ -1,6 +1,6 @@
-## Real-Time Transaction Pattern Detection System
+# Real-Time Transaction Pattern Detection System
 
-# 1. Overview
+## 1. Overview
 This document outlines the architecture for a high-performance, scalable system designed to process a large stream of transaction data in near real-time. The system is composed of two primary, independent mechanisms, both running on Databricks:
 
 •	Mechanism X: A scheduled Databricks job that reads a master transaction log file from an AWS S3 bucket, breaks it into smaller, manageable chunks, and writes them to a Delta table in a landing zone.
@@ -8,14 +8,14 @@ This document outlines the architecture for a high-performance, scalable system 
 •	Mechanism Y: A continuous Databricks job that streams from the Delta table as new transaction chunks arrive, analyses them to detect specific, predefined patterns, and writes the results to a designated S3 bucket.
 
 
-# 2. System Architecture
+## 2. System Architecture
 The architecture is designed around a Databricks-centric model, using Delta Lake for reliable data transfer and external databases for stateful analysis.
  
 <img width="1059" height="631" alt="image" src="https://github.com/user-attachments/assets/b329a340-dcf0-43ee-a65c-3f089c7512f2" />
 
 
 
-# 3. Mechanism X: 
+## 3. Mechanism X: 
 Purpose
 Mechanism X is responsible for breaking down a potentially massive, continuously growing source transaction file into small, consistently sized chunks using the power of pandas on Databricks. 
 Process Flow
@@ -25,7 +25,7 @@ Process Flow
 4.	Output: The DataFrame is added as a chunk csv file located in the S3 Landing Zone (s3://your-bucket/landing_zone/). 
 5.	State Update: The job updates its state file/table with the new last processed line number.
 
-# 4. Mechanism Y: Pattern Detector (Databricks Job)
+## 4. Mechanism Y: Pattern Detector (Databricks Job)
 Purpose
 Mechanism Y is the core analytical engine. It runs as a continuous Databricks job, using Structured Streaming to process data as soon as it's available in the landing zone, perform complex pattern matching, and output actionable insights.
 Process Flow
@@ -41,7 +41,7 @@ o	Data for calculating percentiles.
 5.	Buffering: Detections are collected within the Spark job. A foreachBatch sink is used to process the micro-batch of detections.
 6.	Output: Within the foreachBatch operation, once 50 detections are collected, the job writes all 50 records to a single, unique CSV file in the detections S3 bucket (s3://your-bucket/detections/). The file is named uniquely, e.g., detections_1657886410.csv.
 
-# 5. Pattern Definitions
+## 5. Pattern Definitions
 
 PatId1: UPGRADE
 •	ActionType: UPGRADE
@@ -64,7 +64,7 @@ PatId3: DEI-NEEDED
 •	Note: For this detection, customerName can be “” as the detection applies to the merchant, not an individual customer.
 
 
-# 6. Implementation Considerations
+## 6. Implementation Considerations
 •	State Management: Delta table is used to gather the coming data from chunks and using Py spark on it to analyse for the detections in the Databricks job. Also Managing the chunk offset value in a csv file in s3.
 •	Job Management: Both Databricks jobs need to be monitored for failures. Configure job failure notifications and retry policies appropriately.
 •	Deployment: The entire infrastructure, including Databricks jobs and cloud resources, should be managed as code using a framework like Terraform for repeatable and reliable deployments.
